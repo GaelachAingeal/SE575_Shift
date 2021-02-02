@@ -1,162 +1,98 @@
 package com.drexel;
 
+
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
-
-    private static Scanner scanner = new Scanner(System.in);
-    private static processInput processInput = new processInput();
+    private Properties configProp = new Properties();
 
     public static void main(String[] args) throws IOException {
 
-        boolean quit = false;
-        printMenu();
-        int selection = 0;
-        while (!quit) {
-            System.out.println("\nSelect your choice: ");
-            selection = scanner.nextInt();
-            scanner.nextLine();
+        Main sample = new Main();
+        sample.loadProps2();
+        sample.sayHello();
 
-            switch (selection) {
-                case 0:
-                    printMenu();
-                    break;
-
-                case 1:
-                    addItem();
-                    break;
-
-                case 2:
-                    System.out.print("Enter input file path and name:");
-                    String inFile = scanner.next();
-                    System.out.println("You entered: " + inFile);
-                    try (Scanner scanner = new Scanner(new File(inFile))) {
-                        scanner.useDelimiter(("(?m:^$)"));
-                        int lineToken = 0;
-                        while (scanner.hasNext()) {
-                            String sent = scanner.next();
-                            lineToken++;
-//                        String words[] = sent.split(" ");
-//                        for (String word : words) {
-//                            System.out.println("\nnew words: " + word);
-//                        }
-                            System.out.println("\n" + sent);
-//
-                        }
-                    } catch (Exception e) {
-                        System.out.print(e);
-                    }
-//                try {
-//                    FileInputStream fs = new FileInputStream(inFile);
-//                    int i = 0;
-//                    while((i=fs.read())!=-1) {
-//                        System.out.print((char)i);
-//
-//                    }
-//                    DataInputStream in = new DataInputStream(fs);
-//                    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-//                    String strLine;
-//                    while ((strLine = br.readLine()) != null)   {
-//                        String[] array = strLine.split(" ");
-//
-//                        System.out.println(array.);
-//                    }
-//                    fs.close();
-//                } catch (Exception e) {
-//                    System.out.println(e);
-//                }
-
-                    break;
-
-                case 3:
-                    processInput.printInputData();
-                    break;
-
-                case 4:
-                    System.out.println("Enter File Name: ");
-                    writeFile();
-                    break;
-
-                case 5:
-                    System.out.println("Exiting menu.");
-                    quit = true;
-                    break;
-
-                case 8:
-                    System.out.println("Enter input");
-                    String consoleInput = scanner.nextLine();
-                    String[] array = consoleInput.split(" ");
-                    System.out.println("output string: " + Arrays.toString(array));
-//                    for (int i =0; i < array.length; i++) {
-//                        System.out.println(array[i]+"\n");
-//                    }
-                    shiftArray(array);
-//                    reverseArray(array);
-                    System.out.println("output string: " + Arrays.toString(array));
-                    break;
-
-                default:
-                    System.out.println("Option from menu not selected.");
-                    quit = true;
-                    break;
+        if (sample.getlineCountPostiion().equals("top")) {
+            String input = sample.consoleInput();
+            ArrayList<String> output = sample.shiftWords(input);
+            if (sample.outputType().equals("true")) {
+                sample.writeToFile(output);
+            } else {
+                sample.printLineCount(output);
+                sample.printConsole(output);
             }
+        } else {
+            String input = sample.consoleInput();
+            ArrayList<String> output = sample.shiftWords(input);
+            sample.printConsole(output);
+            sample.printLineCount(output);
+
         }
-        scanner.close();
-
     }
 
-    public static void printMenu() {
-        System.out.println("Choose from these choices");
-        System.out.println("-------------------------");
-        System.out.println("Press 0 to display menu selections.");
-        System.out.println("Press 1 to enter data on the console.");
-        System.out.println("Press 2 to enter a text file.");
-        System.out.println("Press 3 to confirm console input.");
-        System.out.println("Press 4 to write to file.");
-        System.out.println("Press 5 to exit.");
+    public void loadProps2() {
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("resources/app.properties");
+        try {
+            configProp.load(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void addItem() {
-        System.out.println("Enter your data: ");
-        processInput.addItem(scanner.nextLine());
+    public void sayHello() {
+        System.out.println(configProp.getProperty("hello.world"));
     }
 
-    public static void writeFile() throws IOException {
-        String filename = scanner.nextLine();
+    public String getlineCountPostiion() {
+        return configProp.getProperty("line.count");
+    }
+
+    public String outputType() {
+        return configProp.getProperty("output.file");
+    }
+
+    public String consoleInput() {
+        System.out.println("Enter line of text.");
+        Scanner kb = new Scanner(System.in);
+        return kb.nextLine();
+    }
+
+    public ArrayList<String> shiftWords(String input) {
+        ArrayList<String> shiftedLines = new ArrayList<>();
+        String[] words = input.split("\\s+");
+        int counter = words.length;
+        for (int i = 0; i < counter; i++) {
+            input = input.substring(input.indexOf(words[1], words[0].length())) + " " + words[0];
+            input = input.charAt(0) + input.substring(1);
+            shiftedLines.add(input);
+//            System.out.println("arry = " + shiftedLines.get(i));
+            words = input.split("\\s+");
+        }
+        return shiftedLines;
+    }
+
+    public void printConsole(ArrayList<String> arrayList) {
+        Collections.sort(arrayList);
+        for (String sorted : arrayList) {
+            System.out.println(sorted);
+        }
+    }
+
+    public void printLineCount(ArrayList<String> array) {
+        System.out.println("number of lines " + array.size());
+    }
+
+    public void writeToFile(ArrayList<String> array) throws IOException {
+        String filename = "output.txt";
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        System.out.println("Enter data for file ");
-        writer.write(scanner.nextLine());
+        writer.write(String.valueOf(array));
         writer.close();
     }
-
-    public static void reverseArray(String[] array) {
-        int maxIndex = array.length - 1; //represents max length of the array
-        int halfLength = array.length / 2; //represents only half the length of array because swapping half the numbers
-        for (int i =0; i < halfLength; i++) {
-            String temp = array[i];
-            array[i] = array[maxIndex - i];
-            array[maxIndex - i] = temp;
-            System.out.println(Arrays.toString(array));
-
-        }
-
-    }
-
-    public static void shiftArray(String[] array) {
-        int maxIndex = array.length - 1; //represents max length of the array
-        int halfLength = array.length -2; //represents only half the length of array because swapping half the numbers
-        for (int i =0; i < array.length; i++) {
-            String temp = array[i];
-            array[i] = array[maxIndex - i];
-            array[maxIndex - i] = temp;
-
-        }
-    }
-
-
-    }
+}
