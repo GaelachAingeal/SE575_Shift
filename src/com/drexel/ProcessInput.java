@@ -16,6 +16,7 @@ public class ProcessInput {
             System.out.println(i + 1 + ". " + inputData.get(i));
         }
     }
+
     public ArrayList<String> shiftWords(String input) {
         ArrayList<String> shiftedLines = new ArrayList<>();
         String[] words = input.split("\\s+");
@@ -24,15 +25,9 @@ public class ProcessInput {
             input = input.substring(input.indexOf(words[1], words[0].length())) + " " + words[0];
             input = input.charAt(0) + input.substring(1);
             shiftedLines.add(input);
-//            System.out.println("arry = " + shiftedLines.get(i));
             words = input.split("\\s+");
         }
         return shiftedLines;
-    }
-
-    public void replaceToUpperCase(ArrayList<String> arrayList) {
-        arrayList.replaceAll(String::toUpperCase);
-
     }
 
 }

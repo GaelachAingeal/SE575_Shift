@@ -18,8 +18,10 @@ public class OutputData {
     public void writeToFile(ArrayList<String> array) throws IOException {
         String filename = "output.txt";
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        System.out.println(array.size());
-        writer.write(String.valueOf(array));
+        Collections.sort(array);
+        for (String str : array) {
+            writer.write(str + System.lineSeparator());
+        }
         writer.close();
     }
 
