@@ -10,35 +10,49 @@ public class Main {
     private Properties configProp = new Properties();
     private static ProcessInput processInput = new ProcessInput();
     private static OutputData outputData = new OutputData();
-    private static InputData inputData = new InputData();
+    private static InputConsole inputConsole = new InputConsole();
+    private static InputFile inputFile = new InputFile();
 
     public static void main(String[] args) throws IOException {
 
         Main sample = new Main();
         sample.loadProps();
 
+        String input = null;
+        ArrayList<String> shiftedOutput;
+
+        if (sample.getInputType().equals("console")) {
+            inputConsole.displayMessage();
+            input = inputConsole.consoleInput();
+        }
+
+        if (sample.getInputType().equals("file")) {
+            inputFile.displayMessage();
+            input = inputFile.fileInput();
+        }
+
+        shiftedOutput = processInput.shiftWords(input);
+
+        if (sample.getCaseSensitivity().equals("true")) {
+            shiftedOutput.replaceAll(new MyOperator());
+        }
 
         if (sample.getlineCountPostiion().equals("top")) {
-            String input = inputData.consoleInput();
-            ArrayList<String> output = processInput.shiftWords(input);
-            if (sample.outputType().equals("true")) {
-                outputData.writeToFile(output);
-            } else {
-                outputData.printLineCount(output);
-                outputData.printConsole(output);
-            }
-        } else {
-            String input = inputData.consoleInput();
-            ArrayList<String> output = processInput.shiftWords(input);
-            outputData.printConsole(output);
-            outputData.printLineCount(output);
-
+            outputData.printLineCount(shiftedOutput);
         }
-//        if (sample.getCaseSensitivity().equals("true")) {
-//            String input sample.consoleInput();
-//            ArrayList<String> output = sample.replaceToUpperCase(input);
-//            ArrayList<String> shifted = sample.shiftWords(output);
-//        }
+
+        if (sample.getOutputType().equals("console")) {
+            outputData.printConsole(shiftedOutput);
+        }
+
+        if (sample.getlineCountPostiion().equals("bottom")) {
+            outputData.printLineCount(shiftedOutput);
+        }
+
+        if (sample.getOutputType().equals("file")) {
+            outputData.writeToFile(shiftedOutput);
+        }
+
     }
 
     public void loadProps() {
@@ -54,12 +68,16 @@ public class Main {
         return configProp.getProperty("line.count");
     }
 
-    public String outputType() {
-        return configProp.getProperty("output.file");
-    }
-
     public String getCaseSensitivity() {
         return configProp.getProperty("case.sensitivity");
+    }
+
+    public String getInputType() {
+        return configProp.getProperty("input.type");
+    }
+
+    public String getOutputType() {
+        return configProp.getProperty("output.type");
     }
 
 }
