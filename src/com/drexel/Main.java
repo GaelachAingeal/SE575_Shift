@@ -1,6 +1,12 @@
 package com.drexel;
 
 
+import com.drexel.Input.InputConsole;
+import com.drexel.Input.InputFile;
+import com.drexel.Ouput.OutputData;
+import com.drexel.exceptions.FileInputException;
+import com.drexel.exceptions.FileOutputException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -13,7 +19,7 @@ public class Main {
     private static InputConsole inputConsole = new InputConsole();
     private static InputFile inputFile = new InputFile();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws FileOutputException, FileInputException {
 
         Main sample = new Main();
         sample.loadProps();
@@ -31,6 +37,7 @@ public class Main {
             input = inputFile.fileInput();
         }
 
+        assert input != null;
         shiftedOutput = processInput.shiftWords(input);
 
         if (sample.getCaseSensitivity().equals("true")) {
@@ -50,6 +57,7 @@ public class Main {
         }
 
         if (sample.getOutputType().equals("file")) {
+            outputData.displayMessage();
             outputData.writeToFile(shiftedOutput);
         }
 

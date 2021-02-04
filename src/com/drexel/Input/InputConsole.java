@@ -1,4 +1,6 @@
-package com.drexel;
+package com.drexel.Input;
+
+import com.drexel.ReceiveInput;
 
 import java.util.Scanner;
 
