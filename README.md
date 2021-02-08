@@ -4,17 +4,24 @@
 * Application created using Java 11.
 * No specific parameters are needed to run program.
 
-### Menu
-A menu will appear on the startup with options that will allow the following:
-* 0 will display the menu
-* 1 will allow user to enter data to the console.
-* 2 will allow user to upload a text file to read.
-* 3 will output the users console input.
-* 4 will write input to a file.
-* 5 to exit program.
+## User will configure properties in app.properties File
+The following options are available:
+#### input.type
+1. file : will accept file when provided with path and file name
+2. console : will accept input via console
 
-These options will loop until user selects 5 to exit the program
-or stops the application manually from the IDE.
+#### line.count
+1. bottom : will provide line count given input at after input
+2. top : will provide line count at top prior to outputing processed data
+
+#### case.sensitivity
+1. true : will return data in all uppercase format
+2. false : will return data as it was received
+
+#### output.type
+1. file : will return output as a file & will ask to provide file name
+2. console : will output processed data to the console
+
 
 The file output will be saved to the root of the program directory.
 
