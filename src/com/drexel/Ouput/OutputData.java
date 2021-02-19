@@ -6,7 +6,6 @@ import com.drexel.exceptions.FileOutputException;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -29,10 +28,31 @@ public class OutputData implements ReceiveInput {
             context.executeStrategy(outFile);
             BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
             Collections.sort(array);
+                writer.write("number of lines " + array.size());
+                for (String str : array) {
+                    writer.write(str + System.lineSeparator());
+                }
+                writer.close();
+        } catch (Exception errorMessage) {
+            throw new FileOutputException("Error trying to write file.");
+        }
+    }
+
+    public void writeToFileStop(ArrayList<String> array, String stopWords, boolean stopWordsEnable) throws FileOutputException {
+        String outFile = scanner.next();
+        try {
+            context.executeStrategy(outFile);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
+            Collections.sort(array);
             for (String str : array) {
+                if (stopWordsEnable){
+                    if (array.get(0).contains(stopWords))
+                            array.remove(0);
+
+                }
                 writer.write(str + System.lineSeparator());
             }
-                writer.close();
+            writer.close();
         } catch (Exception errorMessage) {
             throw new FileOutputException("Error trying to write file.");
         }
@@ -46,5 +66,9 @@ public class OutputData implements ReceiveInput {
     @Override
     public void displayMessage() {
         System.out.println("Enter file name for output: ");
+    }
+
+    public void displayMessage(String headerFooterData) {
+        System.out.println(headerFooterData);
     }
 }

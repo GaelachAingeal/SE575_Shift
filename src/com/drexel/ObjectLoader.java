@@ -3,7 +3,7 @@ package com.drexel;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public class OjectLoader extends ClassLoader {
+public class ObjectLoader extends ClassLoader {
     public Object loadObject(String className) {
         try {
             // Create a new ClassLoader
