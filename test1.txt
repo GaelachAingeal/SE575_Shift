@@ -1,0 +1,8 @@
+this is testing function
+
+APPLE GOODBYE LIKE
+GOODBYE LIKE APPLE
+LIKE APPLE GOODBYE
+
+Line count is 3
+this is testing function

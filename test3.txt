@@ -1,0 +1,20 @@
+this is testing abstraction method
+Line count is 9
+apple dog cat try gooble like thirteeo bye like
+bye like
+apple dog cat try gooble like thirteeo
+cat try gooble like thirteeo bye like apple dog
+dog cat try gooble like thirteeo bye like apple
+gooble like
+thirteeo bye like
+apple dog cat try
+like
+apple dog cat try gooble like thirteeo bye
+like
+thirteeo bye like
+apple dog cat try gooble
+thirteeo bye like
+apple dog cat try gooble like
+try gooble like thirteeo bye like apple dog cat
+
+this is testing abstraction method

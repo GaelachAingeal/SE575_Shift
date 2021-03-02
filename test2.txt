@@ -1,0 +1,8 @@
+this is testing abstraction method
+Line count is 4
+ANYMORE LIKE JAVA NOT
+JAVA NOT ANYMORE LIKE
+LIKE JAVA NOT ANYMORE
+NOT ANYMORE LIKE JAVA
+
+this is testing abstraction method
